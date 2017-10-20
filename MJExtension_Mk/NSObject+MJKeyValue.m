@@ -157,13 +157,7 @@ static NSNumberFormatter *numberFormatter_;
                         value = [value mj_url];
                     } else if (type.isNumberType) {
                         NSString *oldValue = value;
-                        
-                        // NSString -> NSNumber
-                        if (type.typeClass == [NSDecimalNumber class]) {
-                            value = [NSDecimalNumber decimalNumberWithString:oldValue];
-                        } else {
-                            value = [numberFormatter_ numberFromString:oldValue];
-                        }
+                        value = [numberFormatter_ numberFromString:oldValue];
                         
                         // 如果是BOOL
                         if (type.isBoolType) {
@@ -179,8 +173,9 @@ static NSNumberFormatter *numberFormatter_;
                     }
                 } else if (type.typeClass == [NSDecimalNumber class] && [value isKindOfClass:[NSNumber class]]){
                     // NSNumber -> NSDecimalNumber
-                    NSString *oldValue = [value stringValue];
-                    value = [NSDecimalNumber decimalNumberWithString:oldValue];
+                    double tmpDouble = [value doubleValue];
+                    NSString *tmpStr = [NSString stringWithFormat:@"%lf", tmpDouble];
+                    value = [NSDecimalNumber decimalNumberWithString:tmpStr];
                 }
                 
                 // value和property类型不匹配
